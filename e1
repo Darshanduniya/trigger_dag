@@ -1,0 +1,18 @@
+from airflow import DAG
+from airflow.operators.dummy_operator import DummyOperator
+from datetime import datetime
+
+default_args = {
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'start_date': datetime(2023, 7, 23),
+    'retries': 1,
+}
+
+child_dag = DAG(
+    'child_dag',
+    default_args=default_args,
+    schedule_interval=None,
+)
+
+start = DummyOperator(task_id='start', dag=child_dag)
